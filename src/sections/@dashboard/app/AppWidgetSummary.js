@@ -6,7 +6,7 @@ import { Card, Typography } from '@mui/material';
 import { fShortenNumber } from '../../../utils/formatNumber';
 // components
 import Iconify from '../../../components/Iconify';
-
+import './Component.css'
 // ----------------------------------------------------------------------
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
@@ -32,7 +32,7 @@ AppWidgetSummary.propTypes = {
 
 export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
   return (
-    <Card
+    <Card className='ratings'
       sx={{
         py: 5,
         boxShadow: 0,

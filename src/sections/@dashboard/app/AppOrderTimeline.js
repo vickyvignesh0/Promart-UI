@@ -40,14 +40,14 @@ export default function AppOrderTimeline({ title, subheader, list, ...other }) {
 OrderItem.propTypes = {
   isLast: PropTypes.bool,
   item: PropTypes.shape({
-    time: PropTypes.instanceOf(Date),
+    str: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.string,
   }),
 };
 
 function OrderItem({ item, isLast }) {
-  const { type, title, time } = item;
+  const { type, title, str } = item;
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -67,7 +67,7 @@ function OrderItem({ item, isLast }) {
         <Typography variant="subtitle2">{title}</Typography>
 
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {fDateTime(time)}
+          {str}
         </Typography>
       </TimelineContent>
     </TimelineItem>

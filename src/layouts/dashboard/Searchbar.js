@@ -30,8 +30,6 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
-
 export default function Searchbar() {
   const [isOpen, setOpen] = useState(false);
 
@@ -42,6 +40,26 @@ export default function Searchbar() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSearch = () => {
+    const search = document.getElementById('search').value;
+    const request = new XMLHttpRequest();
+    request.open("GET", `http://localhost:8007/search/${search}`);
+    request.send();
+    request.onload = () => {
+      console.log(request);
+      if(request.status === 200){
+        const resp = JSON.parse(request.response);
+        window.sessionStorage.setItem('products', JSON.stringify(resp.products));
+        console.log(resp.products);
+        setOpen(false);
+        window.location.href = '/dashboard/search'
+      }else{
+        console.log(`error ${request.status} ${request.statusText}`)
+        setOpen(false);
+      }
+    }
+  }
 
   return (
     <ClickAwayListener onClickAway={handleClose}>
@@ -55,6 +73,7 @@ export default function Searchbar() {
         <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>
           <SearchbarStyle>
             <Input
+                id='search'
               autoFocus
               fullWidth
               disableUnderline
@@ -66,7 +85,7 @@ export default function Searchbar() {
               }
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
             />
-            <Button variant="contained" onClick={handleClose}>
+            <Button variant="contained" onClick={handleSearch}>
               Search
             </Button>
           </SearchbarStyle>

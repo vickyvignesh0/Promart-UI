@@ -3,74 +3,52 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-// utils
-import { fCurrency } from '../../../utils/formatNumber';
-// components
-import Label from '../../../components/Label';
-import { ColorPreview } from '../../../components/color-utils';
-
-// ----------------------------------------------------------------------
+import './Product.css'
 
 const ProductImgStyle = styled('img')({
   top: 0,
-  width: '100%',
+  marginTop:'10px',
+  left:'50%',
+  width: '65%',
   height: '100%',
-  objectFit: 'cover',
+  objectFit: 'contain',
   position: 'absolute',
+  transform:'translateX(-50%)'
 });
 
-// ----------------------------------------------------------------------
 
 ShopProductCard.propTypes = {
   product: PropTypes.object,
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  // eslint-disable-next-line camelcase
+  const { title, image, best_offer, uid } = product;
+  let price = '';
+  // eslint-disable-next-line camelcase
+  price = `₹ ${best_offer.price}`;
+  function handleClick(){
+    sessionStorage.setItem('uid', uid);
+    window.location.href = '/dashboard/products'
+  }
 
   return (
-    <Card>
+      // eslint-disable-next-line react/jsx-no-bind
+    <Card className='product' onClick={handleClick}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {status && (
-          <Label
-            variant="filled"
-            color={(status === 'sale' && 'error') || 'info'}
-            sx={{
-              zIndex: 9,
-              top: 16,
-              right: 16,
-              position: 'absolute',
-              textTransform: 'uppercase',
-            }}
-          >
-            {status}
-          </Label>
-        )}
-        <ProductImgStyle alt={name} src={cover} />
+        <ProductImgStyle alt={title} src={image} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
-            {name}
+            {title}
           </Typography>
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={colors} />
           <Typography variant="subtitle1">
-            <Typography
-              component="span"
-              variant="body1"
-              sx={{
-                color: 'text.disabled',
-                textDecoration: 'line-through',
-              }}
-            >
-              {priceSale && fCurrency(priceSale)}
-            </Typography>
-            &nbsp;
-            {fCurrency(price)}
+            {price}
           </Typography>
         </Stack>
       </Stack>

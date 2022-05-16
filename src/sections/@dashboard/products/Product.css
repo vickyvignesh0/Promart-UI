@@ -1,0 +1,4 @@
+.product:hover{
+    cursor: pointer;
+    transform: scale(105%,105%);
+}

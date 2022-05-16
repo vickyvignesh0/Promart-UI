@@ -13,21 +13,30 @@ AppWebsiteVisits.propTypes = {
   subheader: PropTypes.string,
   chartData: PropTypes.array.isRequired,
   chartLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  chartSource: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default function AppWebsiteVisits({ title, subheader, chartLabels, chartData, ...other }) {
+export default function AppWebsiteVisits({ title, subheader, chartLabels, chartData, chartSource, ...other }) {
   const chartOptions = merge(BaseOptionChart(), {
     plotOptions: { bar: { columnWidth: '16%' } },
     fill: { type: chartData.map((i) => i.fill) },
     labels: chartLabels,
-    xaxis: { type: 'datetime' },
+    chart: {
+      events: {
+        dataPointSelection: (event, chartContext, config) => {
+          const index = config.dataPointIndex;
+          window.open(chartSource[index]);
+        }
+      }
+    },
+    xaxis: { type: 'string' },
     tooltip: {
       shared: true,
       intersect: false,
       y: {
         formatter: (y) => {
           if (typeof y !== 'undefined') {
-            return `${y.toFixed(0)} visits`;
+            return `${y.toFixed(0)} `;
           }
           return y;
         },
