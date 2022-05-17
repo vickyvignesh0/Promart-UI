@@ -23,10 +23,21 @@ ShopProductCard.propTypes = {
 
 export default function ShopProductCard({ product }) {
   // eslint-disable-next-line camelcase
-  const { title, image, best_offer, uid } = product;
-  let price = '';
+  const { title, image, img, price, best_offer, uid } = product;
+  let pr = '';
   // eslint-disable-next-line camelcase
-  price = `₹ ${best_offer.price}`;
+  if(best_offer){
+    // eslint-disable-next-line camelcase
+    pr = `₹ ${best_offer.price}`;
+  }else{
+    pr = `₹ ${price}`;
+  }
+  let im = '';
+  if(image){
+    im = image;
+  }else{
+    im = img;
+  }
   function handleClick(){
     sessionStorage.setItem('uid', uid);
     window.location.href = '/dashboard/products'
@@ -36,7 +47,7 @@ export default function ShopProductCard({ product }) {
       // eslint-disable-next-line react/jsx-no-bind
     <Card className='product' onClick={handleClick}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        <ProductImgStyle alt={title} src={image} />
+        <ProductImgStyle alt={title} src={im} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -48,7 +59,7 @@ export default function ShopProductCard({ product }) {
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="subtitle1">
-            {price}
+            {pr}
           </Typography>
         </Stack>
       </Stack>

@@ -44,7 +44,7 @@ export default function Searchbar() {
   const handleSearch = () => {
     const search = document.getElementById('search').value;
     const request = new XMLHttpRequest();
-    request.open("GET", `http://localhost:8007/search/${search}`);
+    request.open("GET", `http://192.46.215.67:8007/search/${search}`);
     request.send();
     request.onload = () => {
       console.log(request);
