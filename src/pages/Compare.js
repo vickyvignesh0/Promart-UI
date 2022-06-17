@@ -7,27 +7,19 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
-  TableContainer,
-  TablePagination, Box,
+  TableContainer, Grid,
 } from '@mui/material';
 // components
 import {styled} from "@mui/material/styles";
 import Page from '../components/Page';
-import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
-import Iconify from '../components/Iconify';
-import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
-
-import {db} from "../services/FirebaseService";
+import Product from "./Product";
+import ShopProductCard from "../sections/@dashboard/products/ProductCard";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,132 +52,35 @@ function applySortFilter(array, comparator, query) {
 
 export default function Compare() {
 
-  const ProductImgStyle = styled('img')({
-    top: 0,
-    width: '65%',
-    height: '100%',
-    objectFit: 'contain',
-    position: 'absolute',
-  });
-
-  const [products, setProducts] = useState([]);
-  const [specification,setSpecification] = useState([]);
-  const [ratings,setRatings] = useState([]);
-  const [positive, setPositive] = useState([]);
-  const [neutral, setNeutral] = useState([]);
-  const [negative, setNegative] = useState([]);
+  const [uids, setUids] = useState([sessionStorage.getItem('compare'), sessionStorage.getItem('compare1')]);
+  const [titles, setTitles] = useState([sessionStorage.getItem('title'), sessionStorage.getItem('title1')]);
   const [tableHead, setTableHead] = useState([]);
 
-  useEffect(() => {
-    const uids = [sessionStorage.getItem('compare'), sessionStorage.getItem('compare1')];
-    for (let i = 0; i < uids.length; i+1) {
-      db.collection("products").doc(uids[i]).get().then((Snapshot) => {
+  sessionStorage.removeItem("compare")
+  sessionStorage.removeItem("compare1")
 
-        // Loop through the data and store
-        // it in array to display
-        let data = {};
-        if (Snapshot.exists) {
-          data = Snapshot.data();
-          console.log(data);
-          setProducts(products => [...products, data]);
-          setSpecification(specifications => [...specifications,data.specifications.specifications_flat]);
-          setRatings(ratings => [...ratings, data.ratings.rating_text]);
-          if(data.analysis) {
-            setPositive(positive => [...positive, data.analysis.analysis.positive]);
-            setNeutral(neutral => [...neutral, data.analysis.analysis.neutral]);
-            setNegative(negative => [...negative, data.analysis.analysis.negative]);
-          }
-          setTableHead(TABLE_HEAD => [...TABLE_HEAD, { id: uids[i], label: data.title, alignRight: false }])
-        } else {
-          const request = new XMLHttpRequest();
-          request.open("GET", `http://localhost:8007/product/${uids[i]}`);
-          request.send();
-          request.onload = () => {
-            if (request.status === 200) {
-              const resp = JSON.parse(request.response);
-              setProducts(products => [...products, resp]);
-              setSpecification(specifications => [...specifications,resp.specifications.specifications_flat]);
-              setRatings(ratings => [...ratings, resp.ratings.rating_text]);
-              if(resp.analysis) {
-                setPositive(positive => [...positive, resp.analysis.analysis.positive]);
-                setNeutral(neutral => [...neutral, resp.analysis.analysis.neutral]);
-                setNegative(negative => [...negative, resp.analysis.analysis.negative]);
-              }
-              setTableHead(TABLE_HEAD => [...TABLE_HEAD, { id: uids[i], label: data.title, alignRight: false }])
-            } else {
-              console.log(`error ${request.status} ${request.statusText}`)
-            }
-          }
-        }
-      });
-    }
+  useEffect(() => {
+    setTableHead(TABLE_HEAD => [...TABLE_HEAD, { id: uids[0], label: titles[0], alignRight: false }])
+    setTableHead(TABLE_HEAD => [...TABLE_HEAD, { id: uids[1], label: titles[1], alignRight: false }])
   },[]);
 
   return (
 
     <Page title="Compare">
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
           <Typography variant="h4" gutterBottom>
             Compare
           </Typography>
         </Stack>
 
-        <Card>
-          <Scrollbar>
-            <TableContainer sx={{mt:'30px', minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  headLabel={tableHead}
-                  rowCount={products.length}
-                />
-                <TableBody>
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      {/* <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} /> */}
-                    </TableCell>
-                    <TableCell align="left">
-                      <Box sx={{ pt: '100%', position: 'relative' }}>
-                        <ProductImgStyle alt="Product Image" src={products[0].image} />
-                      </Box>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Box sx={{ pt: '100%', position: 'relative' }}>
-                        <ProductImgStyle alt="Product Image" src={products[1].image} />
-                      </Box>
-                    </TableCell>
-                    <TableCell align="right">
-                      {/* <UserMoreMenu /> */}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow
-                      hover
-                      tabIndex={-1}
-                  >
-                    <TableCell padding="checkbox">
-                      {/* <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} /> */}
-                    </TableCell>
-                    <TableCell align="left">{products[0].price}</TableCell>
-                    <TableCell align="left">{products[1].price}</TableCell>
-                    {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                    {/* <TableCell align="left"> */}
-                    {/*  <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}> */}
-                    {/*    {sentenceCase(status)} */}
-                    {/*  </Label> */}
-                    {/* </TableCell> */}
-
-                    <TableCell align="right">
-                      {/* <UserMoreMenu /> */}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                      <TableCell colSpan={6} />
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-        </Card>
+        <Grid container spacing={3}>
+          {uids.map((uid) => (
+              <Grid key={uid} item xs={6} >
+                <Product uid={uid} />
+              </Grid>
+          ))}
+        </Grid>
       </Container>
     </Page>
   );

@@ -73,7 +73,7 @@ export default function DashboardApp() {
             }
             else{
                 const request = new XMLHttpRequest();
-                request.open("GET", `http://192.46.215.67:8007/product/${uid}`);
+                request.open("GET", `http://172.105.60.128:8007/product/${uid}`);
                 request.send();
                 request.onload = () => {
                     if(request.status === 200){
@@ -124,9 +124,11 @@ export default function DashboardApp() {
     console.log(product.uid);
     if(compare){
         sessionStorage.setItem('compare1', product.uid);
+        sessionStorage.setItem('title', product.title);
         window.location.href = '/dashboard/compare'
     }else{
         sessionStorage.setItem('compare', product.uid)
+        sessionStorage.setItem('title1', product.title)
     }
   }
 
@@ -168,7 +170,7 @@ export default function DashboardApp() {
                         </Typography>
                     </CardContent>
                     <CardActions style={{position:'absolute', bottom:0, marginBottom:'10px', marginLeft:'5px'}}>
-                        <Button size="medium" href={product.url} target='_blank'>
+                        <Button size="medium" href={offer.url} target='_blank'>
                             <Iconify icon="emojione-v1:shopping-bags" sx={{mr:'5px'}}/>Shop @ {offer.shop}
                         </Button>
                     </CardActions>
