@@ -73,7 +73,7 @@ export default function DashboardApp() {
             }
             else{
                 const request = new XMLHttpRequest();
-                request.open("GET", `http://172.105.60.128:8007/product/${uid}`);
+                request.open("GET", `http://localhost:8007/product/${uid}`);
                 request.send();
                 request.onload = () => {
                     if(request.status === 200){
