@@ -12,6 +12,12 @@
     "lint": "eslint --ext .js,.jsx ./src",
     "lint:fix": "eslint --fix --ext .js,.jsx ./src"
   },
+  "devServer": {
+    "inline": true,
+    "contentBase": "./dist",
+    "port": 8007,
+    "proxy": { "/api/**": { "target": "http://172.105.53.74:8007", "secure": false }  }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

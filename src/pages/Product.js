@@ -73,8 +73,9 @@ export default function Product(props) {
                 }
                 else{
                     const request = new XMLHttpRequest();
-                    request.open("GET", `http://localhost:8007/product/${uid}`);
+                    request.open("GET", `http://172.105.53.74:8007/product/${uid}`);
                     request.send();
+                    console.log(request.open)
                     request.onload = () => {
                         if(request.status === 200){
                             const resp = JSON.parse(request.response);
