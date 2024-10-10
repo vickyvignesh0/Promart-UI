@@ -5,15 +5,14 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCIl7n_YwQeA8QWGX8BX_B-kNXSrei8c_w",
-    authDomain: "sentimental-analysis-fproject.firebaseapp.com",
-    databaseURL: "https://sentimental-analysis-fproject-default-rtdb.firebaseio.com",
-    projectId: "sentimental-analysis-fproject",
-    storageBucket: "sentimental-analysis-fproject.appspot.com",
-    messagingSenderId: "353631901578",
-    appId: "1:353631901578:web:a46380dce873f3c0e45a73",
-    measurementId: "G-BSC2KJXSVB"
-};
+    apiKey: "AIzaSyBiLxauh_V8Gri_SGBIcdACOiaCQXnDY3U",
+    authDomain: "promart-ui.firebaseapp.com",
+    projectId: "promart-ui",
+    storageBucket: "promart-ui.appspot.com",
+    messagingSenderId: "439234965958",
+    appId: "1:439234965958:web:28c5bad68db82a3fc142c7",
+    measurementId: "G-GM8GNLGHF0"
+  };
 
 // Initialize Firebase
 // Use this to initialize the firebase App
